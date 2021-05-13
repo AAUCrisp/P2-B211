@@ -12,18 +12,19 @@ FORMAT = 'utf-8'
 HOST = ''
 PORT = 9400
 BUFFERSIZE = 2048
-
-RELAY_ADDR = ('192.168.1.133', 8889)
-
-tello = tello.Tello()
-
 VIDEO_PORT = 11111
 STATE_PORT = 8890
 
+RELAY_ADDR = ('192.168.1.216', 8889)
+
+tello = tello.Tello()
+
+"""
 # Create video socket
 VIDEO_UDP = (HOST, VIDEO_PORT)
 VIDEO_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 VIDEO_client_socket.bind(VIDEO_UDP)
+"""
 
 # Create state socket
 STATE_UDP = (HOST, STATE_PORT)
@@ -35,18 +36,21 @@ UDP_RELAY = (HOST,PORT)
 UDP_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 UDP_client_socket.bind(UDP_RELAY)
 
+#address_schema = 'udp://@{ip}:{port}'
+#address = address_schema.format(ip='192.168.1.127', port=11111)
+#cap = cv2.VideoCapture('udp://192.168.1.127/11111')
+
 def video_stream():
     while True:
-        Video = Videobehandling.BackgroundFrameRead
-#        img = VIDEO_client_socket.recvfrom(BUFFERSIZE)
-        img = tello.get_frame_read().frame # get the 
-        #img = cv2.resize(img, (360,240))
-        cv2.imshow("Live Stream", img)
+        img = tello.get_frame_read().frame
+        cv2.namedWindow('Live Stream')
+        cv2.imshow('Live Stream', img)
         cv2.waitKey(1)
 
 
 def control_drone():
     # Start Pygame
+
     pygame.init()
 
     # Initialize the joysticks
@@ -96,6 +100,8 @@ def control_drone():
                     msg = 'streamon'
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
+                    thread_video.start()
+                    print("Streamen er startet")
 
                 if event.button == 7:
                     msg = 'command'
@@ -121,6 +127,7 @@ def control_drone():
                     msg = 'rc 0 0 0 0' 
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
+
 
             if event.type == JOYHATMOTION:
                 #if joystick.get_hat(0)==(0,0):
@@ -162,7 +169,7 @@ def recv_state():
     #print(dataStats[-1])
 
 thread_video = threading.Thread(target=video_stream)
-thread_video.start()
+#thread_video.start()
 thread_control = threading.Thread(target=control_drone)
 thread_control.start()
 #thread_stats = threading.Thread(target=recv_state)
