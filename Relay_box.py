@@ -10,7 +10,7 @@ STATE_PORT = 8890
 VIDEO_PORT = 11111
 
 TELLO_IP = '192.168.10.1'
-USER_IP = '192.168.1.197'
+USER_IP = '192.168.1.30'
 
 TELLO_ADDR = (TELLO_IP, CMD_PORT)
 
@@ -53,7 +53,7 @@ def backward_videofeed():
     while True:
         data, addr = video_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
         video_udp.sendto(data, USER_VIDEO_ADDR) # sends videofeed to the user
-        time.sleep(0.1)
+        time.sleep(0.01)
         print(data)
   
 
