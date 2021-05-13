@@ -1,4 +1,4 @@
-from djitellopy import tello
+from DJITelloPy import tello
 import cv2
 import threading
 import socket
@@ -14,9 +14,10 @@ BUFFERSIZE = 2048
 VIDEO_PORT = 11111
 STATE_PORT = 8890
 
-RELAY_ADDR = ('192.168.1.216', 8889)
+RELAY_ADDR = ('192.168.10.1', 8889)
 
 tello = tello.Tello()
+
 
 """
 # Create video socket
@@ -24,6 +25,7 @@ VIDEO_UDP = (HOST, VIDEO_PORT)
 VIDEO_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 VIDEO_client_socket.bind(VIDEO_UDP)
 """
+
 
 # Create state socket
 STATE_UDP = (HOST, STATE_PORT)
@@ -41,6 +43,7 @@ UDP_client_socket.bind(UDP_RELAY)
 
 def video_stream():
     while True:
+
         img = tello.get_frame_read().frame
         cv2.namedWindow('Live Stream')
         cv2.imshow('Live Stream', img)

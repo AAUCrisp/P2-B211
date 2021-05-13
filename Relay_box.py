@@ -8,6 +8,7 @@ RELAY_IP = ''
 CMD_PORT = 8889
 STATE_PORT = 8890
 VIDEO_PORT = 11111
+Vdata = 0
 
 TELLO_IP = '192.168.10.1'
 USER_IP = '192.168.1.30'
@@ -49,13 +50,15 @@ def forward_control_cmd():
         print(cmd)
    
 # sends the tello drones videofeed to the user
-def backward_videofeed():
+def backward_videofeed(Vdata):
     while True:
-        data, addr = video_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
-        video_udp.sendto(data, USER_VIDEO_ADDR) # sends videofeed to the user
-        time.sleep(0.01)
-        print(data)
+        Vdata, addr = video_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
+        print(Vdata)
   
+def backward_videofeed_send(Vdata):
+    while True:
+        video_udp.sendto(Vdata, USER_VIDEO_ADDR) # sends videofeed to the user
+
 
 # sends state info from tello drone to the user
 def backward_state():
@@ -77,10 +80,13 @@ def run_program():
     # Start threads 
     control_thread = threading.Thread(target=forward_control_cmd)
     control_thread.start()
-    video_thread = threading.Thread(target=backward_videofeed)
+    video_thread = threading.Thread(target=backward_videofeed, args=(Vdata, ))
     video_thread.start()
+    Video_send_thread = threading.Thread(targer=backward_videofeed_send,args=(Vdata, ))
+    Video_send_thread.start()
     state_thread = threading.Thread(target=backward_state)
     state_thread.start()
+
 
     print('All threads are running')
 
