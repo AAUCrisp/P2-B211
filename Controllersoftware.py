@@ -5,7 +5,6 @@ import socket
 import time
 import pygame
 from pygame.locals import *
-import Videobehandling
 
 
 FORMAT = 'utf-8'
@@ -176,5 +175,3 @@ thread_control.start()
 #thread_stats.start()
 #thread_print = threading.Thread(target=state_print)
 #thread_print.start()
-
-
