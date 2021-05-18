@@ -5,6 +5,9 @@ import socket
 import time
 import pygame
 from pygame.locals import *
+import pyautogui #screenshot library
+import datetime #datetime library
+from databasestuff import *
 
 
 FORMAT = 'utf-8'
@@ -49,6 +52,19 @@ def video_stream():
         cv2.imshow('Live Stream', img)
         cv2.waitKey(1)
 
+def takeScreenshot():
+
+    #getting the current data and time
+    timestamp = datetime.datetime.now()
+    timestamp_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
+    #taking the screenshot
+    newScreenshot = pyautogui.screenshot()
+    #saving screenshot with datetime path
+    newScreenshot.save(r'C:\\Users\Susan\Desktop\Screenshots\Screenshot {}.PNG'.format(timestamp_str)) #path should be changed to users desired file path
+    print("Screenshot has been saved!")
+   
+
+
 
 def control_drone():
     # Start Pygame
@@ -90,9 +106,8 @@ def control_drone():
 
                 if event.button == 2:
                     print("Button x has been pressed")
-                    msg = 'CW 90'
-                    msg = msg.encode(encoding=FORMAT) 
-                    sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
+                   #take screenshot of video
+                    screenshots()
 
                 if event.button == 3:
                     print("Button y has been pressed")
