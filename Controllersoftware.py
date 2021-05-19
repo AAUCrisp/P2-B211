@@ -177,19 +177,25 @@ def control_drone():
 def recv_state():
     print("State-feed Started")
     while True: 
-        print("LORT!!   1")
-        data, server = UDP_client_socket.recvfrom(1518)
-        print("LORT!!   2")
+        data, server = STATE_client_socket.recvfrom(3000)       # Buffer?
         data = data.decode(FORMAT)
-        print("LORT!!   3")
-        print(data[-1])
-        print("LORT!!   4")
-        data[-1] = data.rsplit(";")
-        print("X-Speed: " + data[3]*0.036 + "Km/h")
-        print("Y-Speed: " + data[4]*0.036 + "Km/h")
-        print("Altitude-Speed: " + data[5]*0.036 + "Km/h")
-        print("Flight Height: " + data[9]/100 + "meter")
-        print("Battery Level: " + data[10] + "%")
+        data = data.rsplit(";")
+        # Straight Speed
+        straight = float( data[9].replace("vgy:", "") ) * 0.036
+        print(f"Straight-Speed: {straight}Km/h")
+        # Sideways Speed
+        sideways = float( data[8].replace("vgx:", "") ) * 0.036
+        print(f"Sideways-Speed: {sideways}Km/h")
+        # Altitude Speed
+        altitude = float( data[10].replace("vgz:", "") ) * 0.036
+        print(f"Altitude-Speed: {altitude}Km/h")
+        # Flight Height
+        height = float( data[14].replace("h:", "") ) / 100
+        print(f"Flight Height: {height} meter")
+        # Battery Level
+        print("Battery Level: " + data[15] + "%")
+        time.sleep(0.5)
+        print("\n \n \n")
 
 
 # def state_print():
