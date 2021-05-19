@@ -126,19 +126,19 @@ def control_drone():
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
 
             if event.type == JOYAXISMOTION:
-                if (-0.3 > joystick.get_axis(0)) or (-0.3 > joystick.get_axis(1)) or (-0.3 > joystick.get_axis(2)) or (-0.3 > joystick.get_axis(3)) or (joystick.get_axis(0) > 0.3) or (joystick.get_axis(1) > 0.3) or (joystick.get_axis(2) > 0.3) or (joystick.get_axis(3) > 0.3):
-                    msg = rcc
-                    msg = msg.encode(encoding=FORMAT) 
-                    sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
-                    #tello.send_rc_control(0,0,-10,0)
-
-                elif (joystick.get_axis(4) > -0.5) or (joystick.get_axis(5) > -0.5):
+                if (joystick.get_axis(4) > -0.5) or (joystick.get_axis(5) > -0.5):
                     rcUD = str(int (((joystick.get_axis(5) - 1)*50) - ((joystick.get_axis(4)- 1) * 50)))
                     rcc = ('rc '+rcLR+' '+rcFB+' '+rcUD+' '+rcY)
                     print(rcLR+' '+rcFB+' '+rcUD+' '+rcY)
                     msg = rcc
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
+                
+                elif (-0.3 > joystick.get_axis(0)) or (-0.3 > joystick.get_axis(1)) or (-0.3 > joystick.get_axis(2)) or (-0.3 > joystick.get_axis(3)) or (joystick.get_axis(0) > 0.3) or (joystick.get_axis(1) > 0.3) or (joystick.get_axis(2) > 0.3) or (joystick.get_axis(3) > 0.3):
+                    msg = rcc
+                    msg = msg.encode(encoding=FORMAT) 
+                    sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
+                    #tello.send_rc_control(0,0,-10,0)
 
                 else:
                     msg = 'rc 0 0 0 0' 
@@ -170,18 +170,19 @@ def control_drone():
             #msg = msg.encode(encoding=FORMAT) 
             #sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
 
-"""
+# -- Drone State Receive Function --
 def recv_state():
     while True: 
         try:
             data, server = UDP_client_socket.recvfrom(1518)
-            dataStats.append(data.decode(encoding=FORMAT))
+            data = data.decode(FORMAT)
+            print(data)
         except Exception:
             print ('\nExit . . .\n')
             break
-"""
 
-#def state_print():
+
+# def state_print():
     #time.sleep(5)
     #print(dataStats[-1])
 
@@ -193,3 +194,4 @@ thread_control.start()
 #thread_stats.start()
 #thread_print = threading.Thread(target=state_print)
 #thread_print.start()
+thread_state = threading.Thread(target=recv_state)
