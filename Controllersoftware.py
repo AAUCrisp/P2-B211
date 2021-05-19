@@ -7,7 +7,7 @@ import pygame
 from pygame.locals import *
 import pyautogui #screenshot library
 import datetime #datetime library
-from databasestuff import *
+#from databasestuff import *
 
 
 FORMAT = 'utf-8'
@@ -17,7 +17,9 @@ BUFFERSIZE = 2048
 VIDEO_PORT = 11111
 STATE_PORT = 8890
 
-RELAY_ADDR = ('192.168.10.1', 8889)
+#RELAY_ADDR = ('192.168.10.1', 8889)    # Tello Direct
+RELAY_ADDR = ('192.168.1.132', 8889)      # Relaybox School
+# RELAY_ADDR = ('192.168.1.132', 8889)      # Relaybox Steffen Home
 
 tello = tello.Tello()
 
@@ -52,6 +54,7 @@ def video_stream():
         cv2.imshow('Live Stream', img)
         cv2.waitKey(1)
 
+'''
 def takeScreenshot():
 
     #getting the current data and time
@@ -62,7 +65,7 @@ def takeScreenshot():
     #saving screenshot with datetime path
     newScreenshot.save(r'C:\\Users\Susan\Desktop\Screenshots\Screenshot {}.PNG'.format(timestamp_str)) #path should be changed to users desired file path
     print("Screenshot has been saved!")
-   
+   '''
 
 
 
@@ -107,7 +110,7 @@ def control_drone():
                 if event.button == 2:
                     print("Button x has been pressed")
                    #take screenshot of video
-                    screenshots()
+                    #screenshots()
 
                 if event.button == 3:
                     print("Button y has been pressed")
@@ -172,14 +175,21 @@ def control_drone():
 
 # -- Drone State Receive Function --
 def recv_state():
+    print("State-feed Started")
     while True: 
-        try:
-            data, server = UDP_client_socket.recvfrom(1518)
-            data = data.decode(FORMAT)
-            print(data)
-        except Exception:
-            print ('\nExit . . .\n')
-            break
+        print("LORT!!   1")
+        data, server = UDP_client_socket.recvfrom(1518)
+        print("LORT!!   2")
+        data = data.decode(FORMAT)
+        print("LORT!!   3")
+        print(data[-1])
+        print("LORT!!   4")
+        data[-1] = data.rsplit(";")
+        print("X-Speed: " + data[3]*0.036 + "Km/h")
+        print("Y-Speed: " + data[4]*0.036 + "Km/h")
+        print("Altitude-Speed: " + data[5]*0.036 + "Km/h")
+        print("Flight Height: " + data[9]/100 + "meter")
+        print("Battery Level: " + data[10] + "%")
 
 
 # def state_print():
@@ -195,3 +205,4 @@ thread_control.start()
 #thread_print = threading.Thread(target=state_print)
 #thread_print.start()
 thread_state = threading.Thread(target=recv_state)
+thread_state.start()
