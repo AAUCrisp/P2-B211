@@ -1,8 +1,8 @@
-import pyautogui #screenshot library
-import sqlite3 as lite #importing sqlite (database)
-import sys             #importing module that gives access to computer system
-import os, shutil      #importing os module that allows us to use operating system dependent functionality
-                       #importing shutil that allows file copying and/or removing. 
+import pyautogui        #screenshot library
+import sqlite3 as lite  #importing sqlite (database)
+import sys              #importing module that gives access to computer system
+import os, shutil       #importing os module that allows us to use operating system dependent functionality
+                        #importing shutil that allows file copying and/or removing. 
 import datetime
 #from datetime import datetime #importing module enabling us to see the date and time.
 import os.path                #importing pathname manipulations
