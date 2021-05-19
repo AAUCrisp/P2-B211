@@ -7,7 +7,7 @@ FORMAT = 'utf-8'
 RELAY_IP = ''
 STATE_PORT = 8890
 
-USER_IP = '192.168.1.30'
+USER_IP = '192.168.1.197'
 
 # Relay addresses
 RELAY_STATE_ADDR = (RELAY_IP, STATE_PORT)
@@ -20,10 +20,8 @@ state_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #
 state_udp.bind(RELAY_STATE_ADDR) # 
 
 # sends state info from tello drone to the user
-def backward_state():
-    while True:
-        data, addr = state_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
-        state_udp.sendto(data, USER_STATE_ADDR) # sends state info to the user 
 
-        #state = data.decode(FORMAT)
-        #print(state)
+while True:
+    data, addr = state_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
+    state_udp.sendto(data, USER_STATE_ADDR) # sends state info to the user 
+

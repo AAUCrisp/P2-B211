@@ -7,7 +7,7 @@ FORMAT = 'utf-8'
 RELAY_IP = ''
 VIDEO_PORT = 11111
 
-USER_IP = '192.168.1.30'
+USER_IP = '192.168.1.197'
 
 # Relay addresses
 RELAY_VIDEO_ADDR = (RELAY_IP, VIDEO_PORT)
@@ -23,9 +23,8 @@ video_udp.bind(RELAY_VIDEO_ADDR) #
 
 
 # sends the tello drones videofeed to the user
-def backward_videofeed(Vdata):
-    while True:
-        Vdata, addr = video_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
-        print(Vdata)
-        video_udp.sendto(Vdata, USER_VIDEO_ADDR) # sends videofeed to the user
+
+while True:
+    data, addr = video_udp.recvfrom(BUFFER_SIZE) # recieve data from the tello drone
+    video_udp.sendto(data, USER_VIDEO_ADDR) # sends videofeed to the user
 
