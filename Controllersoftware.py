@@ -7,7 +7,7 @@ import pygame
 from pygame.locals import *
 import pyautogui #screenshot library
 import datetime #datetime library
-#from databasestuff import *
+from databasestuff import *
 
 
 FORMAT = 'utf-8'
@@ -110,7 +110,8 @@ def control_drone():
                 if event.button == 2:
                     print("Button x has been pressed")
                    #take screenshot of video
-                    #screenshots()
+                    screenshots()
+                    print("Screenshot taken")
 
                 if event.button == 3:
                     print("Button y has been pressed")
@@ -132,7 +133,7 @@ def control_drone():
                 if (joystick.get_axis(4) > -0.5) or (joystick.get_axis(5) > -0.5):
                     rcUD = str(int (((joystick.get_axis(5) - 1)*50) - ((joystick.get_axis(4)- 1) * 50)))
                     rcc = ('rc '+rcLR+' '+rcFB+' '+rcUD+' '+rcY)
-                    print(rcLR+' '+rcFB+' '+rcUD+' '+rcY)
+                    #print(rcLR+' '+rcFB+' '+rcUD+' '+rcY)      # Print RC Command
                     msg = rcc
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
@@ -175,7 +176,7 @@ def control_drone():
 
 # -- Drone State Receive Function --
 def recv_state():
-    print("State-feed Started")
+    print("State-feed Started") 
     while True: 
         data, server = STATE_client_socket.recvfrom(3000)       # Buffer?
         data = data.decode(FORMAT)
@@ -193,7 +194,8 @@ def recv_state():
         height = float( data[14].replace("h:", "") ) / 100
         print(f"Flight Height: {height} meter")
         # Battery Level
-        print("Battery Level: " + data[15] + "%")
+        battery = data[15].replace("bat:", "")
+        print(f"Battery Level: {battery}%")
         time.sleep(0.5)
         print("\n \n \n")
 
