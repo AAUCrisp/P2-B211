@@ -54,20 +54,6 @@ def video_stream():
         cv2.imshow('Live Stream', img)
         cv2.waitKey(1)
 
-'''
-def takeScreenshot():
-
-    #getting the current data and time
-    timestamp = datetime.datetime.now()
-    timestamp_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
-    #taking the screenshot
-    newScreenshot = pyautogui.screenshot()
-    #saving screenshot with datetime path
-    newScreenshot.save(r'C:\\Users\Susan\Desktop\Screenshots\Screenshot {}.PNG'.format(timestamp_str)) #path should be changed to users desired file path
-    print("Screenshot has been saved!")
-   '''
-
-
 
 def control_drone():
     # Start Pygame
@@ -77,7 +63,7 @@ def control_drone():
     # Initialize the joysticks
     pygame.joystick.init()
     while True:
-        time.sleep(0.1)
+        time.sleep(0.05)
         # Get count of joysticks.
         joystick_count = pygame.joystick.get_count()
         

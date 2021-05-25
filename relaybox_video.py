@@ -1,4 +1,4 @@
-import socket, time, threading
+import socket
 
 BUFFER_SIZE = 2048
 FORMAT = 'utf-8'

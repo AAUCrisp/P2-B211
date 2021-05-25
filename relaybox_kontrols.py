@@ -1,4 +1,4 @@
-import socket, time, threading
+import socket, time
 
 BUFFER_SIZE = 2048
 FORMAT = 'utf-8'
@@ -19,10 +19,10 @@ control_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #
 control_udp.bind(RELAY_CMD_ADDR) # 
 
 
-time.sleep(2)
-run = 'command'
-run = run.encode(FORMAT)
-control_udp.sendto(run, TELLO_ADDR)
+#time.sleep(2)
+#run = 'command'
+#run = run.encode(FORMAT)
+#control_udp.sendto(run, TELLO_ADDR)
 while True:
     data, addr = control_udp.recvfrom(BUFFER_SIZE) # recieve data from the user
     control_udp.sendto(data, TELLO_ADDR) # sends cmd til tello drone
