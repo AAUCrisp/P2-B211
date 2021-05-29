@@ -163,10 +163,6 @@ def recv_state():
         print("\n \n \n")
 
 
-# def state_print():
-    #time.sleep(5)
-    #print(dataStats[-1])
-
 thread_video = threading.Thread(target=video_stream)
 thread_control = threading.Thread(target=control_drone)
 thread_control.start()
