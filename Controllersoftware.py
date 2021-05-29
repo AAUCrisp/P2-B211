@@ -7,15 +7,15 @@ import pygame
 from pygame.locals import *
 import pyautogui #screenshot library
 import datetime #datetime library
-from databasestuff import *
+from database import *
 
 
 FORMAT = 'utf-8'
 HOST = ''
-PORT = 9400
 BUFFERSIZE = 2048
-VIDEO_PORT = 11111
+COMMAND_PORT = 8889
 STATE_PORT = 8890
+VIDEO_PORT = 11111
 
 #RELAY_ADDR = ('192.168.10.1', 8889)    # Tello Direct
 RELAY_ADDR = ('192.168.1.132', 8889)      # Relaybox School
@@ -31,7 +31,7 @@ STATE_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 STATE_client_socket.bind(STATE_UDP)
 
 # Create control socket
-UDP_RELAY = (HOST,PORT)
+UDP_RELAY = (HOST, COMMAND_PORT)
 UDP_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 UDP_client_socket.bind(UDP_RELAY)
 
