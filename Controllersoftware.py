@@ -24,13 +24,6 @@ RELAY_ADDR = ('192.168.1.132', 8889)      # Relaybox School
 tello = tello.Tello()
 
 
-"""
-# Create video socket
-VIDEO_UDP = (HOST, VIDEO_PORT)
-VIDEO_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-VIDEO_client_socket.bind(VIDEO_UDP)
-"""
-
 
 # Create state socket
 STATE_UDP = (HOST, STATE_PORT)
@@ -42,13 +35,9 @@ UDP_RELAY = (HOST,PORT)
 UDP_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 UDP_client_socket.bind(UDP_RELAY)
 
-#address_schema = 'udp://@{ip}:{port}'
-#address = address_schema.format(ip='192.168.1.127', port=11111)
-#cap = cv2.VideoCapture('udp://192.168.1.127/11111')
 
 def video_stream():
     while True:
-
         img = tello.get_frame_read().frame
         cv2.namedWindow('Live Stream')
         cv2.imshow('Live Stream', img)
@@ -56,8 +45,8 @@ def video_stream():
 
 
 def control_drone():
+   
     # Start Pygame
-
     pygame.init()
 
     # Initialize the joysticks
@@ -95,7 +84,7 @@ def control_drone():
 
                 if event.button == 2:
                     print("Button x has been pressed")
-                   #take screenshot of video
+                    #take screenshot of video
                     screenshots()
                     print("Screenshot taken")
 
@@ -119,7 +108,6 @@ def control_drone():
                 if (joystick.get_axis(4) > -0.5) or (joystick.get_axis(5) > -0.5):
                     rcUD = str(int (((joystick.get_axis(5) - 1)*50) - ((joystick.get_axis(4)- 1) * 50)))
                     rcc = ('rc '+rcLR+' '+rcFB+' '+rcUD+' '+rcY)
-                    #print(rcLR+' '+rcFB+' '+rcUD+' '+rcY)      # Print RC Command
                     msg = rcc
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
@@ -128,7 +116,6 @@ def control_drone():
                     msg = rcc
                     msg = msg.encode(encoding=FORMAT) 
                     sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
-                    #tello.send_rc_control(0,0,-10,0)
 
                 else:
                     msg = 'rc 0 0 0 0' 
@@ -137,28 +124,18 @@ def control_drone():
 
 
             if event.type == JOYHATMOTION:
-                #if joystick.get_hat(0)==(0,0):
-                    #tello.send_rc_control(0,0,0,0)
-
                 if joystick.get_hat(0)==(-1,0):
-                    #tello.send_rc_control(-10,0,0,0)
                     print("UP")
 
                 if joystick.get_hat(0)==(1,0):
-                    #tello.send_rc_control(10,0,0,0)
                     print("down")
 
                 if joystick.get_hat(0)==(0,-1):
-                    #tello.send_rc_control(0,10,0,0)
                     print("right")
 
                 if joystick.get_hat(0)==(0,1):
-                    #tello.send_rc_control(0,-10,0,0)
                     print("left")
 
-            # Send data
-            #msg = msg.encode(encoding=FORMAT) 
-            #sent = UDP_client_socket.sendto(msg, RELAY_ADDR)
 
 # -- Drone State Receive Function --
 def recv_state():
@@ -191,12 +168,7 @@ def recv_state():
     #print(dataStats[-1])
 
 thread_video = threading.Thread(target=video_stream)
-#thread_video.start()
 thread_control = threading.Thread(target=control_drone)
 thread_control.start()
-#thread_stats = threading.Thread(target=recv_state)
-#thread_stats.start()
-#thread_print = threading.Thread(target=state_print)
-#thread_print.start()
 thread_state = threading.Thread(target=recv_state)
 thread_state.start()
