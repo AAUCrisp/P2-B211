@@ -145,13 +145,13 @@ def recv_state():
         data = data.decode(FORMAT)
         data = data.rsplit(";")
         # Straight Speed
-        straight = float( data[9].replace("vgy:", "") ) * 0.036
+        straight = float( data[9].replace("vgy:", "") ) * 3.6
         print(f"Straight-Speed: {straight}Km/h")
         # Sideways Speed
-        sideways = float( data[8].replace("vgx:", "") ) * 0.036
+        sideways = float( data[8].replace("vgx:", "") ) * 3.6
         print(f"Sideways-Speed: {sideways}Km/h")
         # Altitude Speed
-        altitude = float( data[10].replace("vgz:", "") ) * 0.036
+        altitude = float( data[10].replace("vgz:", "") ) * 3.6
         print(f"Altitude-Speed: {altitude}Km/h")
         # Flight Height
         height = float( data[14].replace("h:", "") ) / 100
