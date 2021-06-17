@@ -4,7 +4,6 @@ import sys              #importing module that gives access to computer system
 import os, shutil       #importing os module that allows us to use operating system dependent functionality
                         #importing shutil that allows file copying and/or removing. 
 import datetime
-#from datetime import datetime #importing module enabling us to see the date and time.
 import os.path                #importing pathname manipulations
 import time                   #importing time module so we can make the programme sleep for a certain amount of secs.
 import glob                   #importing glob module
@@ -15,14 +14,11 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Create a version of the database in database file (.db)
 DB_NAME = "screenshotDatabase.db"
 
-
+# Method to take the screenshot and insert the filename and path into the database
 def takeScreenshot():
-
     timestamp = datetime.datetime.now()
     timestamp_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
     newScreenshot = pyautogui.screenshot()
-    #saving the screenshot to a path on the C drive
-    #newScreenshot.save(r'C:\\Users\Susan\Desktop\Screenshots\Screenshot {}.PNG'.format(timestamp_str))
 
     #determining path the screenshot will be saved to (a) specified foler path in Python folder/explorer)
     saveScreenshot = f"{ROOT_DIR}\Screenshots\Screenshot{timestamp_str}.PNG"
@@ -98,18 +94,13 @@ def listAll(tableName):
 
     # Close the database
     con.close()
-    
 
 
 ### Creating a way to store the path for the images in the database"
-
 def screenshots():
 
     #calling function that takes screenshot and saves it in a folder on users computer
     takeScreenshot()
-
-    #making a list array of all screenshots in the folder on users C-drive - shortcut for listdir + fnmatch
-    #allScreenshots = glob.glob("C:\\Users\Susan\Desktop\Screenshots\*.png")
 
     #making a list array of all screenshots in the folder on the Python folder - shortcut for listdir + fnmatch
     allScreenshots = glob.glob(f"{ROOT_DIR}\Screenshots\*.png")
@@ -129,18 +120,3 @@ def screenshots():
     #calling the function that inserts filepath into database with table name Screenshots and file path specificied with function dbPath
     dbFileInsert("Screenshots",dbPath)
     
-### ------------------------- ###
-###  ----   CALL FUNCTION AREA   ----  ###
-### ------------------------- ###
-
-#creating table in database  
-#createTable("Screenshots", ["filePath TEXT"]) #comment out if already existing
-
-screenshots()
-
-#listAll("Screenshots")
-
-
-
-#print(allScreenshots)
-
