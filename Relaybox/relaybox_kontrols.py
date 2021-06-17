@@ -25,4 +25,6 @@ control_udp.bind(RELAY_CMD_ADDR) #
 #control_udp.sendto(run, TELLO_ADDR)
 while True:
     data, addr = control_udp.recvfrom(BUFFER_SIZE) # recieve data from the user
-    control_udp.sendto(data, TELLO_ADDR) # sends cmd til tello drone
+    if(data != last_data):      # check if it's the same commmand as last time, before sending
+        last_data = data
+        control_udp.sendto(last_data, TELLO_ADDR) # sends cmd til tello drone
